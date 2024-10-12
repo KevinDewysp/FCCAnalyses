@@ -1,5 +1,6 @@
 '''
 Analysis example, measure Higgs mass in the Z(mumu)H recoil measurement.
+This analysis stage runs on HTCondor.
 '''
 from argparse import ArgumentParser
 
@@ -23,17 +24,11 @@ class Analysis():
 
         # Mandatory: List of processes to run over
         self.process_list = {
-            # Run the full statistics in one output file named
-            # <outputDir>/p8_ee_ZZ_ecm240.root
-            'p8_ee_ZZ_ecm240': {'fraction': 0.005},
-            # Run 50% of the statistics with output into two files named
-            # <outputDir>/p8_ee_WW_ecm240/chunk<N>.root
-            'p8_ee_WW_ecm240': {'fraction': 0.005},
-            # Run 20% of the statistics in one file named
-            # <outputDir>/p8_ee_ZH_ecm240_out.root (example on how to change
-            # the output name)
-            'p8_ee_ZH_ecm240': {'fraction': 0.005,
-                                'output': 'p8_ee_ZH_ecm240_out'}
+            # Run the full statistics in 20 jobs and save the output into
+            # <outputDir>/p8_ee_??_ecm240/chunk<N>.root
+            'p8_ee_ZZ_ecm240': {'chunks': 20},
+            'p8_ee_WW_ecm240': {'chunks': 20},
+            'p8_ee_ZH_ecm240': {'chunks': 20}
         }
 
         # Mandatory: Production tag when running over the centrally produced
@@ -41,8 +36,7 @@ class Analysis():
         self.prod_tag = 'FCCee/spring2021/IDEA/'
 
         # Optional: output directory, default is local running directory
-        self.output_dir = "/eos/user/k/kdewyspe/4_Sept/FCCee/MidTerm/Test_mumu/" \
-                          f'stage1_{self.ana_args.muon_pt}'
+        self.output_dir = 'ZH_mumu_recoil_batch/stage1'
 
         # Optional: analysisName, default is ''
         # self.analysis_name = 'My Analysis'
@@ -51,7 +45,24 @@ class Analysis():
         # self.n_threads = 4
 
         # Optional: running on HTCondor, default is False
-        # self.run_batch = False
+        self.run_batch = True
+
+        # Optional: batch queue name when running on HTCondor, default is
+        # 'workday'
+        self.batch_queue = 'workday'
+
+        # Optional: computing account when running on CERN's HTCondor, default
+        # is 'group_u_FCC.local_gen'
+        self.comp_group = 'group_u_FCC.local_gen'
+
+        # Optional: output directory on eos, if specified files will be copied
+        # there once the batch job is done, default is empty
+        self.output_dir_eos = '/eos/experiment/fcc/ee/analyses/case-studies/' \
+                              f'higgs/mH-recoil/stage1_{self.ana_args.muon_pt}'
+
+        # Optional: type for eos, needed when <outputDirEos> is specified. The
+        # default is FCC EOS, which is eospublic
+        self.eos_type = 'eospublic'
 
         # Optional: test file
         self.test_file = 'root://eospublic.cern.ch//eos/experiment/fcc/ee/' \

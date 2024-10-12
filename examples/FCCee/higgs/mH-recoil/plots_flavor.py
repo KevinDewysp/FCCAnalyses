@@ -1,66 +1,72 @@
 import ROOT
 
 # global parameters
-intLumi = 1
-intLumiLabel = "L = 5 ab^{-1}"
-ana_tex = "e^{+}e^{-} #rightarrow ZH #rightarrow #mu^{+}#mu^{-} b b"
+intLumi = 10.8
+intLumiLabel = "L = 10.8 ab^{-1}"
+ana_tex = "e^{+}e^{-} #rightarrow ZH #rightarrow ij + X"
 delphesVersion = "3.4.2"
 energy = 240.0
 collider = "FCC-ee"
-inputDir = "outputs/FCCee/higgs/mH-recoil/mumu_flavor/histmaker"
+inputDir = "/eos/user/k/kdewyspe/4_Sept/FCCee/MidTerm/Zqq_240/MVAInputs_kt_flav_4/final/"
 formats = ["png", "pdf"]
-outdir = "outputs/FCCee/higgs/mH-recoil/mumu_flavor/plots/"
+outdir = "/eos/user/k/kdewyspe/4_Sept/FCCee/MidTerm/Zqq_240/MVAInputs_kt_flav_4/plot/"
 plotStatUnc = True
 
 colors = {}
 colors["ZH"] = ROOT.kRed
 colors["ZZ"] = ROOT.kGreen + 2
+colors["WW"] = ROOT.kBlue + 2
+colors["Zqq"] = ROOT.kOrange + 2
 
 procs = {}
-procs["signal"] = {"ZH": ["p8_ee_ZH_Zmumu_ecm240"]}
-procs["backgrounds"] = {"ZZ": ["p8_ee_ZZ_mumubb_ecm240"]}
+procs["signal"] = {"ZH": ["wzp6_ee_qqH_ecm240"]}
+procs["backgrounds"] = {"ZZ": ["p8_ee_ZZ_ecm240"],
+                        "WW": ["p8_ee_WW_ecm240"],
+                        "Zqq": ["p8_ee_Zqq_ecm240"]}
 
 legend = {}
 legend["ZH"] = "ZH"
 legend["ZZ"] = "ZZ"
+legend["WW"] = "WW"
+legend["Zqq"] = "Zqq"
 
 hists = {}
 
-hists["zmumu_recoil_m"] = {
-    "output": "zmumu_recoil_m",
+hists["zed_hadronic_recoil_m"] = {
+    "output": "zed_hadronic_recoil_m",
     "logy": False,
     "stack": True,
-    "rebin": 100,
-    "xmin": 120,
-    "xmax": 140,
+    "rebin": 1,
+    "xmin": 0,
+    "xmax": 200,
     "ymin": 0,
     "ymax": 2000,
     "xtitle": "Recoil (GeV)",
-    "ytitle": "Events / 100 MeV",
+    "ytitle": "Events / 1 MeV",
 }
 
-hists["jj_m"] = {
-    "output": "jj_m",
+hists["Z_hadronic_m"] = {
+    "output": "Z_hadronic_m",
     "logy": False,
     "stack": True,
-    "rebin": 2,
-    "xmin": 50,
-    "xmax": 150,
+    "rebin": 1,
+    "xmin": 0,
+    "xmax": 200,
     "ymin": 0,
     "ymax": 4000,
-    "xtitle": "m_{jj} (GeV)",
+    "xtitle": "Z_hadronic_m (GeV)",
     "ytitle": "Events / 2 GeV",
 }
 
-hists["scoresum_B"] = {
-    "output": "scoresum_B",
-    "logy": True,
-    "stack": False,
-    "rebin": 1,
-    "xmin": 0,
-    "xmax": 2.0,
-    "ymin": 1,
-    "ymax": 100000,
-    "xtitle": "p_{1}(B) + p_{2}(B)",
-    "ytitle": "Events",
-}
+# hists["scoresum_B"] = {
+#     "output": "scoresum_B",
+#     "logy": True,
+#     "stack": False,
+#     "rebin": 1,
+#     "xmin": 0,
+#     "xmax": 2.0,
+#     "ymin": 1,
+#     "ymax": 100000,
+#     "xtitle": "p_{1}(B) + p_{2}(B)",
+#     "ytitle": "Events",
+# }
